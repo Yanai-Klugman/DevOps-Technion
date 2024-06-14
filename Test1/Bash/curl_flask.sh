@@ -1,10 +1,11 @@
 #!/bin/bash
 
-flask_url='http://127.0.0.1:5000'
+joke=$(curl -s http://127.0.0.1:8080/ | jq -r '.joke')
 
-joke=$(curl -s $flask_url/ | jq -r '.joke')
-
-word_count=$(echo $joke | wc -w)
-
-echo "Number of words: $word_count"
+if [ -n "$joke" ]; then
+    word_count=$(echo "$joke" | wc -w)
+    echo "Number of words: $word_count"
+else
+    echo "Failed to retrieve joke!"
+fi
 
